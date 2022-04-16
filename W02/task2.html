@@ -1,1 +1,38 @@
-echo Task2
+
+<html>
+
+    <head>
+            <title>W02: task2</title>
+    </head>
+    
+    <body>
+        <script src="vec3.js"></script>
+        
+        <p>Enter x,y,z and press the button. Output min,max,mid.</p>
+        
+        <p>
+            <label>x:<input type="number" value="0" id="x_input" /></label>
+            <label>y:<input type="number" value="0" id="y_input" /></label>
+            <label>z:<input type="number" value="0" id="z_input" /></label>
+        </p>
+        
+        <p><input type="button" onclick="e()" value="Calculation"　id=“click”/></p>
+        
+        <p id="msg"></p>
+        
+        <script>
+            function e() {
+                var x = document.getElementById("x_input");
+                var y = document.getElementById("y_input");
+                var z = document.getElementById("z_input");
+                var v = new Vec3( x.value, y.value, z.value );
+                 
+                msg.innerText = 'min:'+v.min() + ' max:'+v.max() + ' mid:'+v.mid();
+            }
+            
+            let msg = document.getElementById('msg');
+            
+        </script>
+
+    </body>
+</html>

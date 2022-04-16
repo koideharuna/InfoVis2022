@@ -1,1 +1,69 @@
-echo Task3
+
+<html>
+    <head>
+            <title>W02: task2</title>
+    </head>
+    
+    <body>
+        <script src="vec3.js"></script>
+        
+        <p>Enter the three vertices of the triangle and press the button.
+            Outputs the area of the triangle.</p>
+        
+        <p>
+            <label>x0:<input type="number" value="0" id="x0_input" /></label>
+            <label>y0:<input type="number" value="0" id="y0_input" /></label>
+            <label>z0:<input type="number" value="0" id="z0_input" /></label>
+        </p>
+        
+        <p>
+            <label>x1:<input type="number" value="0" id="x1_input" /></label>
+            <label>y1:<input type="number" value="0" id="y1_input" /></label>
+            <label>z1:<input type="number" value="0" id="z1_input" /></label>
+        </p>
+        
+        <p>
+            <label>x2:<input type="number" value="0" id="x2_input" /></label>
+            <label>y2:<input type="number" value="0" id="y2_input" /></label>
+            <label>z2:<input type="number" value="0" id="z2_input" /></label>
+        </p>
+        
+        <p><input type="button" onclick="e()" value="Calculation"　id=“click”/></p>
+        
+        <p id="msg"></p>
+        
+        
+        <script>
+            function e() {
+                var x0 = document.getElementById("x0_input");
+                var y0 = document.getElementById("y0_input");
+                var z0 = document.getElementById("z0_input");
+                var v0 = new Vec3( x0.value, y0.value, z0.value );
+                
+                var x1 = document.getElementById("x1_input");
+                var y1 = document.getElementById("y1_input");
+                var z1 = document.getElementById("z1_input");
+                var v1 = new Vec3( x1.value, y1.value, z1.value );
+                
+                var x2 = document.getElementById("x2_input");
+                var y2 = document.getElementById("y2_input");
+                var z2 = document.getElementById("z2_input");
+                var v2 = new Vec3( x2.value, y2.value, z2.value );
+                
+                var S = AreaOfTriangle( v0, v1, v2 );
+                msg.innerText = 'Area : '+ S;
+            }
+            
+            function AreaOfTriangle( v0, v1, v2 ){
+                var v01 = v1.sub(v0);
+                var v02 = v2.sub(v0);
+                var S = v01.cross(v02);
+                return S.length()/2;
+            }
+ 
+            let msg = document.getElementById('msg');
+            
+        </script>
+
+    </body>
+</html>

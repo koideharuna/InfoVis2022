@@ -6,11 +6,8 @@ class Vec3
         this.y = y;
         this.z = z;
     }
-}
 
-
-class Vec3
-{
+    
     add( v )
     {
         this.x += v.x;
@@ -18,11 +15,8 @@ class Vec3
         this.z += v.z;
         return this;
      }    
-}
 
-
-class Vec3
-{
+    
     sub( v )
     {
         this.x -= v.x;
@@ -30,51 +24,40 @@ class Vec3
         this.z -= v.z;
         return this;
      }    
-}
-    
 
-class Vec3
-{
-    sum( )
+    
+    sum( v )
     {
         return this.x + this.y + this.z;    
      }
-}
-   
 
-class Vec3
-{
+    
     min( )
     {
         //return Math.min( this.x, this.y, this.z );
         const m =  this.x < this.y ? this.x : this.y;
         return m < this.z ? m : this.z;
     }  
-}
 
-
-class Vec3
-{
+    
     max( )
     {
         //return Math.max( this.x, this.y, this.z );
         const m = this.x > this.y ? this.x : this.y;
-        return m > this.z ? this.z : m;
+        return m > this.z ? m : this.z;
     }  
-}
 
-
-class Vec3
-{
+    
     mid( )
     {
-        return this.sum() - this.min() - this.max();
+        var  m
+        if(this.x < this.y){m=this.x;this.x=this.y;this.y=m;}
+        if(this.x < this.z){m=this.x;this.x=this.z;this.z=m;}
+        if(this.y < this.z){m=this.y;this.y=this.z;this.z=m;}
+        return this.y;
     }  
-}
 
-
-class Vec3
-{
+    
     cross( v )
     {
         var x = this.x, y = this.y, z = this.z;
@@ -83,11 +66,8 @@ class Vec3
         this.z = x * v.y - y * v.x;
         return this;
     }  
-}
 
-
-class Vec3
-{
+    
     length( )
     {
         return Math.sqrt( this.x * this.x + this.y * this.y + this.z * this.z );
