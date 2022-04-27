@@ -1,12 +1,12 @@
-d3.csv("https://koideharuna.github.io/InfoVis2021/W04/w04_task1.csv")
+d3.csv("https://koideharuna.github.io/InfoVis2022/W04/w04_task1.csv")
     .then( data => {
-        data.forEach( d => { d.x = +d.x; d.y = +d.y; });
+        data.forEach( d => { d.x = +d.x; d.y = +d.y; d.r = +d.r; });
 
         var config = {
             parent: '#drawing_region',
             width: 256,
             height: 256,
-            margin: {top:10, right:10, bottom:20, left:20}
+            margin: {top:10, right:10, bottom:30, left:30}
         };
 
         const scatter_plot = new ScatterPlot( config, data );
@@ -47,15 +47,19 @@ class ScatterPlot {
 
         self.yscale = d3.scaleLinear()
             .range( [self.inner_height, 0] );
-
+        
         self.xaxis = d3.axisBottom( self.xscale )
-            .ticks(6);
+            .ticks(6)
+            .tickSize(3)
+            .tickPadding([10]);
 
         self.xaxis_group = self.chart.append('g')
             .attr('transform', `translate(0, ${self.inner_height})`);
         
         self.yaxis = d3.axisLeft( self.yscale )
-            .ticks(6);
+            .ticks(4)
+            .tickSize(3)
+            .tickPadding([10]);
 
         self.yaxis_group = self.chart.append('g')
             .attr('transform', `translate(0, 0)`);
@@ -63,14 +67,16 @@ class ScatterPlot {
 
     update() {
         let self = this;
+        
+        const rmax = d3.max( self.data, d => d.r );
 
         const xmin = d3.min( self.data, d => d.x );
         const xmax = d3.max( self.data, d => d.x );
-        self.xscale.domain( [xmin, xmax] );
-
+        self.xscale.domain( [xmin - rmax, xmax + rmax] );
+                    
         const ymin = d3.min( self.data, d => d.y );
         const ymax = d3.max( self.data, d => d.y );
-        self.yscale.domain( [ymin, ymax] );
+        self.yscale.domain( [ymin - rmax, ymax + rmax] );
 
         self.render();
     }
@@ -84,7 +90,8 @@ class ScatterPlot {
             .append("circle")
             .attr("cx", d => self.xscale( d.x ) )
             .attr("cy", d => self.yscale( d.y ) )
-            .attr("r", d => d.r );
+            .attr("r", d => d.r )
+            .style("fill",function(d){ return d.color; });
 
         self.xaxis_group
             .call( self.xaxis );
