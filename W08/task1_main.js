@@ -96,7 +96,6 @@ class ScatterPlot {
             .call( self.yaxis );
          
          
-        /*
         self.svg.append('g')
             .append("text")
             .attr("x", self.config.margin.left + self.inner_width / 3 )
@@ -122,7 +121,6 @@ class ScatterPlot {
             .attr("font-size", "11pt")
             .attr("transform", "rotate(-90)")
             .text("Y-label");
-         */
     }
 
     update() {
