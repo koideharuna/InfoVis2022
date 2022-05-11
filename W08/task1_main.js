@@ -1,6 +1,6 @@
 d3.csv("https://koideharuna.github.io/InfoVis2022/W04/w04_task2.csv")
     .then( data => {
-        data.forEach( d => { d.value = +d.width;});
+        data.forEach( d => { d.width = +d.width;});
 
         var config = {
             parent: '#drawing_region',
@@ -51,7 +51,7 @@ class ScatterPlot {
             .range( [self.inner_height, 0] );
          */
         self.xscale = d3.scaleLinear()
-             .domain([0, d3.max(data, d => d.value)])
+             .domain([0, d3.max(data, d => d.width)])
              .range([0, self.inner_width]);
         
         self.yscale = d3.scaleBand()
@@ -161,7 +161,7 @@ class ScatterPlot {
             .append("rect")
             .attr("x", 0)
             .attr("y", d => self.yscale(d.label))
-            .attr("width", d => self.xscale(d.value))
+            .attr("width", d => self.xscale(d.width))
             .attr("height", self.yscale.bandwidth());
 
         
