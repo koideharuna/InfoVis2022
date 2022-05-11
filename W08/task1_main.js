@@ -58,13 +58,15 @@ class ScatterPlot {
               .range([0, self.inner_height])
               .paddingInner(0.1);
         
+        /*
         const rmax = d3.max( self.data, d => d.r );
         const xmin = d3.min( self.data, d => d.x );
         const xmax = d3.max( self.data, d => d.x );
         const ymin = d3.min( self.data, d => d.y );
         const ymax = d3.max( self.data, d => d.y );
+        */
         
-        
+        /*
         self.xaxis = d3.axisBottom( self.xscale )
             .tickValues([ xmin - rmax , xmax + rmax ])
             .tickSize(3)
@@ -72,15 +74,15 @@ class ScatterPlot {
 
         self.xaxis_group = self.chart.append('g')
             .attr('transform', `translate(0 , ${self.inner_height})`);
-        /*
+        */
         self.xaxis = d3.axisBottom( self.xscale )
                .ticks(5)
                .tickSizeOuter(0);
-        self.xaxis_group = chart.append('g')
-               .attr('transform', `translate(0, ${inner_height})`)
-               .call( xaxis );
-         */
-        
+        self.xaxis_group = self.chart.append('g')
+               .attr('transform', `translate(0, ${self.inner_height})`)
+               .call( self.xaxis );
+         
+        /*
         self.yaxis = d3.axisLeft( self.yscale )
             .tickValues([ ymin - rmax , ymax + rmax ])
             .tickSize(3)
@@ -88,13 +90,12 @@ class ScatterPlot {
 
         self.yaxis_group = self.chart.append('g')
             .attr('transform', `translate(0, 0)`);
-        
-        /*
+         */
         self.yaxis = d3.axisLeft( self.yscale )
                 .tickSizeOuter(0);
-        self.yaxis_group = chart.append('g')
-         .call( yaxis );
-         */
+        self.yaxis_group = self.chart.append('g')
+            .call( self.yaxis );
+         
          
         self.svg.append('g')
             .append("text")
@@ -127,6 +128,7 @@ class ScatterPlot {
     update() {
         let self = this;
         
+        /*
         const rmax = d3.max( self.data, d => d.r );
 
         const xmin = d3.min( self.data, d => d.x );
@@ -136,7 +138,7 @@ class ScatterPlot {
         const ymin = d3.min( self.data, d => d.y );
         const ymax = d3.max( self.data, d => d.y );
         self.yscale.domain( [ymin - rmax, ymax + rmax] );
-
+        */
         self.render();
     }
 
@@ -154,10 +156,11 @@ class ScatterPlot {
             .style("fill",function(d){ return d.color; });
          */
         self.chart.selectAll("rect")
-            .data(data).enter()
+            .data(self.data)
+            .enter()
             .append("rect")
             .attr("x", 0)
-            .attr("y", d => yscale(d.label))
+            .attr("y", d => self.yscale(d.label))
             .attr("width", d => xscale(d.value))
             .attr("height", yscale.bandwidth());
 
