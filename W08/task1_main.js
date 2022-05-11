@@ -23,7 +23,7 @@ class ScatterPlot {
             parent: config.parent,
             width: config.width || 256,
             height: config.height || 256,
-            margin: config.margin || {top:10, right:10, bottom:10, left:10}
+            margin: config.margin || {top:10, right:10, bottom:10, left:10},
         }
         this.data = data;
         this.init();
@@ -43,6 +43,7 @@ class ScatterPlot {
         self.inner_height = self.config.height - self.config.margin.top - self.config.margin.bottom;
 
         /*
+         //W6-task2
         self.xscale = d3.scaleLinear()
             .range( [0, self.inner_width] );
 
@@ -66,12 +67,11 @@ class ScatterPlot {
         const ymax = d3.max( self.data, d => d.y );
         */
         
-        /*
+        /* //W6-task2
         self.xaxis = d3.axisBottom( self.xscale )
             .tickValues([ xmin - rmax , xmax + rmax ])
             .tickSize(3)
             .tickPadding([10]);
-
         self.xaxis_group = self.chart.append('g')
             .attr('transform', `translate(0 , ${self.inner_height})`);
         */
@@ -82,12 +82,11 @@ class ScatterPlot {
                .attr('transform', `translate(0, ${self.inner_height})`)
                .call( self.xaxis );
          
-        /*
+        /* //W6-task2
         self.yaxis = d3.axisLeft( self.yscale )
             .tickValues([ ymin - rmax , ymax + rmax ])
             .tickSize(3)
             .tickPadding([10]);
-
         self.yaxis_group = self.chart.append('g')
             .attr('transform', `translate(0, 0)`);
          */
@@ -97,6 +96,7 @@ class ScatterPlot {
             .call( self.yaxis );
          
          
+        /*
         self.svg.append('g')
             .append("text")
             .attr("x", self.config.margin.left + self.inner_width / 3 )
@@ -122,7 +122,7 @@ class ScatterPlot {
             .attr("font-size", "11pt")
             .attr("transform", "rotate(-90)")
             .text("Y-label");
-
+         */
     }
 
     update() {
