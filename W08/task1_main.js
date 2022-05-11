@@ -49,19 +49,21 @@ class ScatterPlot {
         self.yscale = d3.scaleLinear()
             .range( [self.inner_height, 0] );
          */
+        self.xscale = d3.scaleLinear()
+             .domain([0, d3.max(data, d => d.value)])
+             .range([0, self.inner_width]);
         
-        self.xaxis = d3.axisBottom( xscale )
-                .ticks(5)
-                .tickSizeOuter(0);
-        
-        self.yaxis = d3.axisLeft( yscale )
-                .tickSizeOuter(0);
+        self.yscale = d3.scaleBand()
+              .domain(data.map(d => d.label))
+              .range([0, self.inner_height])
+              .paddingInner(0.1);
         
         const rmax = d3.max( self.data, d => d.r );
         const xmin = d3.min( self.data, d => d.x );
         const xmax = d3.max( self.data, d => d.x );
         const ymin = d3.min( self.data, d => d.y );
         const ymax = d3.max( self.data, d => d.y );
+        
         
         self.xaxis = d3.axisBottom( self.xscale )
             .tickValues([ xmin - rmax , xmax + rmax ])
@@ -70,6 +72,14 @@ class ScatterPlot {
 
         self.xaxis_group = self.chart.append('g')
             .attr('transform', `translate(0 , ${self.inner_height})`);
+        /*
+        self.xaxis = d3.axisBottom( self.xscale )
+               .ticks(5)
+               .tickSizeOuter(0);
+        self.xaxis_group = chart.append('g')
+               .attr('transform', `translate(0, ${inner_height})`)
+               .call( xaxis );
+         */
         
         self.yaxis = d3.axisLeft( self.yscale )
             .tickValues([ ymin - rmax , ymax + rmax ])
@@ -78,6 +88,13 @@ class ScatterPlot {
 
         self.yaxis_group = self.chart.append('g')
             .attr('transform', `translate(0, 0)`);
+        
+        /*
+        self.yaxis = d3.axisLeft( self.yscale )
+                .tickSizeOuter(0);
+        self.yaxis_group = chart.append('g')
+         .call( yaxis );
+         */
          
         self.svg.append('g')
             .append("text")
