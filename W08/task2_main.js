@@ -9,15 +9,15 @@
             margin: {top:50, right:10, bottom:50, left:50}
         };
 
-        const scatter_plot = new ScatterPlot( config, data );
-        scatter_plot.update();
+        const linechart = new LineChart( config, data );
+        linechart.update();
     })
     .catch( error => {
         console.log( error );
     });
 
 
-class ScatterPlot {
+class LineChart {
 
     constructor( config, data ) {
         this.config = {
@@ -44,19 +44,20 @@ class ScatterPlot {
         self.inner_width = self.config.width - self.config.margin.left - self.config.margin.right;
         self.inner_height = self.config.height - self.config.margin.top - self.config.margin.bottom;
 
-        
-        self.xscale =  d3.scaleBand()
-            .domain(self.data.map( d => d.label)) //値の範囲
-            .range([3, self.inner_width]) //画面上のpx範囲
-            .paddingInner(0.3); //バー同士の間のpadding
+    
+        const space = 10;
+        self.xscale =  d3.scaleLinear()
+            .domain([d3.min(self.data, d => d.x)-space,
+                     d3.max(self.data, d => d.x)+space]) //値の範囲
+            .range([0, self.inner_width]); //画面上のpx範囲
         
         self.yscale = d3.scaleLinear()
-            .domain([0,d3.max(self.data, d => d.value)]) //値の範囲
-            .range([self.inner_height,0]); //画面上のpx範囲
-        
+            .domain([d3.max(self.data, d => d.y)+space,
+                     d3.min(self.data, d => d.y)-space]) //値の範囲
+            .range([0,self.inner_height]); //画面上のpx範囲
         
         self.xaxis = d3.axisBottom( self.xscale ) //底辺に軸
-                .tickSizeOuter(0); //外側のメモリサイズ，０＞外側のメモリ無くす
+                .ticks(5);
         self.xaxis_group = self.chart.append('g')
                 .attr('transform', `translate(0, ${self.inner_height})`)
                 .call( self.xaxis );
@@ -64,18 +65,17 @@ class ScatterPlot {
         
         self.yaxis = d3.axisLeft( self.yscale )
                 .ticks(5) //メモリの感覚，メモリの数
-                .tickSizeOuter(0);
         self.yaxis_group = self.chart.append('g')
-            .call( self.yaxis );
+                .call( self.yaxis );
          
 
         self.svg.append('g')
             .append("text")
-            .attr("x", self.config.margin.left + self.inner_width / 3 )
+            .attr("x", self.config.margin.left + self.inner_width / 4 )
             .attr("y", self.config.margin.top/2)
             .attr("font-weight", "bold")
             .attr("font-size", "12pt")
-            .text("Chart Title");
+            .text("LineChart");
         
         self.svg.append('g')
             .append("text")
@@ -85,6 +85,15 @@ class ScatterPlot {
             .attr("font-size", "11pt")
             .attr("transform", "rotate(-90)")
             .text("Y-label");
+        
+        self.svg.append('g')
+            .append("text")
+            .attr("x", (self.config.margin.left + self.inner_width) / 2)
+            .attr("y", self.config.height - self.config.margin.bottom/5 )
+            .attr("font-weight", 300)
+            .attr("font-size", "11pt")
+            .text("X-label");
+        
     }
 
     
@@ -96,16 +105,37 @@ class ScatterPlot {
     
     render() {
         let self = this;
-
+        
         const line = d3.line()
-              .x( d => d.x )
-              .y( d => d.y );
+            .x( d => self.xscale(d.x) )
+            .y( d => self.inner_height -self.yscale(d.y) );
+
+        const area = d3.area()
+            .x( d => self.xscale(d.x) )
+            .y1( d => self.inner_height -self.yscale(d.y) )
+            .y0( self.inner_height  );
         
-        self.svg.append('path')
+
+        self.chart.append('path')
+            .attr('d', area(self.data))
+            .attr('stroke', 'none')
+            .attr('fill', d3.interpolateReds(0.1));
+
+
+        self.chart.append('path')
             .attr('d', line(self.data))
-            .attr('stroke', 'black')
-            .attr('fill', 'none');
+            .attr('stroke', d3.interpolateReds(0.6))
+            .attr('fill', 'none')
+            .attr("stroke-width", 2);
         
+        
+        self.chart.selectAll("circle")
+            .data(self.data)
+            .enter()
+            .append("circle")
+            .attr("cx", d => self.xscale( d.x ) )
+            .attr("cy", d => self.inner_height - self.yscale( d.y ) )
+            .attr("r", 3 );
         
         self.xaxis_group
             .call( self.xaxis );

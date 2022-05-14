@@ -9,15 +9,15 @@ d3.csv("https://koideharuna.github.io/InfoVis2022/W04/w04_task2.csv")
             margin: {top:50, right:10, bottom:50, left:50}
         };
 
-        const scatter_plot = new ScatterPlot( config, data );
-        scatter_plot.update();
+        const barchart = new BarChart( config, data );
+        barchart.update();
     })
     .catch( error => {
         console.log( error );
     });
 
 
-class ScatterPlot {
+class BarChart {
 
     constructor( config, data ) {
         this.config = {
@@ -75,7 +75,7 @@ class ScatterPlot {
             .attr("y", self.config.margin.top/2)
             .attr("font-weight", "bold")
             .attr("font-size", "12pt")
-            .text("Chart Title");
+            .text("BarChart");
         
         self.svg.append('g')
             .append("text")
