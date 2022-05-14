@@ -1,7 +1,7 @@
-d3.csv("https://koideharuna.github.io/InfoVis2022/W04/w04_task2.csv")
+ d3.csv("https://koideharuna.github.io/InfoVis2022/W08/task2_data.csv")
     .then( data => {
-        data.forEach( d => { d.value = +d.width;});
-
+        data.forEach( d => { d.x = +d.x; d.y = +d.y; });
+        
         var config = {
             parent: '#drawing_region',
             width: 256,
@@ -97,15 +97,15 @@ class ScatterPlot {
     render() {
         let self = this;
 
-        self.chart.selectAll("rect")
-            .data(self.data)
-            .enter()
-            .append("rect")
-            .attr("x",d => self.xscale(d.label))
-            .attr("y",d => self.yscale(d.value) )
-            .attr("width", self.xscale.bandwidth() )
-            .attr("height",d => self.inner_height - self.yscale(d.value) )
-            .style("fill",function(d){ return d.color; });
+        const line = d3.line()
+              .x( d => d.x )
+              .y( d => d.y );
+        
+        self.svg.append('path')
+            .attr('d', line(self.data))
+            .attr('stroke', 'black')
+            .attr('fill', 'none');
+        
         
         self.xaxis_group
             .call( self.xaxis );

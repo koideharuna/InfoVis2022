@@ -45,25 +45,25 @@ class ScatterPlot {
         self.inner_height = self.config.height - self.config.margin.top - self.config.margin.bottom;
 
         
-        self.xscale =  d3.scaleBand()
-            .domain(self.data.map( d => d.label)) //値の範囲
-            .range([3, self.inner_width]) //画面上のpx範囲
-            .paddingInner(0.3); //バー同士の間のpadding
+        self.xscale = d3.scaleLinear()
+             .domain([0, d3.max(self.data, d => d.value)]) //値の範囲
+             .range([0, self.inner_width]); //画面上のpx範囲
         
-        self.yscale = d3.scaleLinear()
-            .domain([0,d3.max(self.data, d => d.value)]) //値の範囲
-            .range([self.inner_height,0]); //画面上のpx範囲
+        self.yscale = d3.scaleBand()
+              .domain(self.data.map( d => d.label))
+              .range([0, self.inner_height])
+              .paddingInner(0.3);//バー同士の間のpadding
         
         
         self.xaxis = d3.axisBottom( self.xscale ) //底辺に軸
-                .tickSizeOuter(0); //外側のメモリサイズ，０＞外側のメモリ無くす
+               .ticks(5) //メモリの感覚，メモリの数
+               .tickSizeOuter(0); //外側のメモリサイズ，０＞外側のメモリ無くす
         self.xaxis_group = self.chart.append('g')
-                .attr('transform', `translate(0, ${self.inner_height})`)
-                .call( self.xaxis );
+               .attr('transform', `translate(0, ${self.inner_height})`)
+               .call( self.xaxis );
         
         
         self.yaxis = d3.axisLeft( self.yscale )
-                .ticks(5) //メモリの感覚，メモリの数
                 .tickSizeOuter(0);
         self.yaxis_group = self.chart.append('g')
             .call( self.yaxis );
@@ -79,17 +79,16 @@ class ScatterPlot {
         
         self.svg.append('g')
             .append("text")
-            .attr("x", -self.config.height/2 )
-            .attr("y", self.config.margin.left/5 )
+            .attr("x", (self.config.margin.left + self.inner_width) / 2)
+            .attr("y", self.config.height - self.config.margin.bottom/5 )
             .attr("font-weight", 300)
             .attr("font-size", "11pt")
-            .attr("transform", "rotate(-90)")
-            .text("Y-label");
+            .text("X-label");
     }
 
     
     update() {
-        let self = this;
+        let self = this;        
         self.render();
     }
 
@@ -101,10 +100,10 @@ class ScatterPlot {
             .data(self.data)
             .enter()
             .append("rect")
-            .attr("x",d => self.xscale(d.label))
-            .attr("y",d => self.yscale(d.value) )
-            .attr("width", self.xscale.bandwidth() )
-            .attr("height",d => self.inner_height - self.yscale(d.value) )
+            .attr("x", 0)
+            .attr("y", d => self.yscale(d.label))
+            .attr("width", d => self.xscale(d.value))
+            .attr("height", self.yscale.bandwidth())
             .style("fill",function(d){ return d.color; });
         
         self.xaxis_group
