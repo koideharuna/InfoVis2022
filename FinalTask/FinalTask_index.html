@@ -1,0 +1,49 @@
+<html>
+    <head>
+        <title>Final Task</title>
+	<style>
+	 body {
+	     font-family: system-ui;
+	 }
+	 .container {
+	     display: flex;
+	 }
+	 .bar.active {
+	     stroke: #000;
+	 }
+	 #tooltip {
+	     position: absolute;
+	     opacity: 0;
+	     background: #fff;
+	     border: 1px solid #ddd;
+	     font-size: 12px;
+	     font-weight: 600;
+	     padding: 2px 8px;
+	 }
+	 .tooltip-label {
+	     font-weight: 500;
+	     font-size: 11px;
+	     color: #888;
+	 }
+	</style>
+    </head>
+    <body>
+	<h2>Heroes Dataset</h2>
+	<div id="tooltip"></div>
+	<div class="container">
+        <div>
+            <div><svg id="drawing_region_piechart"></svg></div>
+            <div class="container">
+                <div><svg id="drawing_region_piechart_good"></svg></div>
+                <div><svg id="drawing_region_piechart_bad"></svg></div>
+                <div><svg id="drawing_region_piechart_neutral"></svg></div>
+            </div>
+        </div>
+        <div><svg id="drawing_region_scatterplot"></svg></div>
+	</div>
+	<script src="https://d3js.org/d3.v6.min.js"></script>
+	<script src="PieChart.js"></script>
+	<script src="ScatterPlot.js"></script>
+	<script src="FinalTask_main.js"></script>
+    </body>
+</html>
