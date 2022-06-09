@@ -70,7 +70,7 @@ class ScatterPlot {
     update() {
         let self = this;
 
-        self.cvalue = d => d.Eye color;
+        self.cvalue = d => d.EyeColor;
         self.xvalue = d => d.Height;
         self.yvalue = d => d.Weight;
         
