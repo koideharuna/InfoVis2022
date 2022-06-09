@@ -34,7 +34,7 @@ d3.csv("https://koideharuna.github.io/InfoVis2022/FinalTask/heroes_information.c
             margin: {top:20, right:20, bottom:50, left:50},
             xlabel: 'good',
             cscale: color_scale
-        }, input_data );
+        }, input_data.filter(d => d.Alignment == "good") );
         pie_chart_good.update();
         
         pie_chart_bad = new PieChart( {
@@ -45,9 +45,10 @@ d3.csv("https://koideharuna.github.io/InfoVis2022/FinalTask/heroes_information.c
             margin: {top:20, right:20, bottom:50, left:50},
             xlabel: 'bad',
             cscale: color_scale
-        }, input_data );
+        }, input_data.filter(d => d.Alignment == "bad") );
         pie_chart_bad.update();
         
+        /*
         pie_chart_neutral = new PieChart( {
             parent: '#drawing_region_piechart_neutral',
             width: 200,
@@ -56,8 +57,9 @@ d3.csv("https://koideharuna.github.io/InfoVis2022/FinalTask/heroes_information.c
             margin: {top:20, right:20, bottom:50, left:50},
             xlabel: 'neutral',
             cscale: color_scale
-        }, input_data );
+        }, input_data.filter(d => d.Alignment == "neutral") );
         pie_chart_neutral.update();
+        */
         
         scatter_plot = new ScatterPlot( {
             parent: '#drawing_region_scatterplot',
