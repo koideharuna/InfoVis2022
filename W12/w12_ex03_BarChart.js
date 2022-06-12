@@ -100,7 +100,7 @@ class BarChart {
             .on('click', function(ev,d) {
                 const is_active = filter.includes(d.key);
                 if ( is_active ) {
-                    filter = filter.filter( f => f !== d.key );
+                    filter = filtekeyr.filter( f => f !== d.key );
                 }
                 else {
                     filter.push( d.key );
